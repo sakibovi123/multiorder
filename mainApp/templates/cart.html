@@ -1,0 +1,12 @@
+{% load custom_filter %}
+{% include 'base.html' %}
+Cart Page 
+
+
+
+{% for c in cart_products %}
+    {{c.package}}
+    ${{ c.price }}
+        <p class="badge bg-warning">{{ c|cart_quantity:request.session.cart }}</p>
+        
+{% endfor %}
