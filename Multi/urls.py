@@ -17,13 +17,14 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from mainApp import views
-from mainApp.views import GigDetails, CartView
+from mainApp.views import GigDetails, CartView, OrderCheckoutView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', views.get_home_page, name="get_home_page"),
     path('gigs_details/<int:id>', GigDetails.as_view(), name="gig_details"),
     path('cart/', CartView.as_view(), name="CartView"),
+    path('checkout/', OrderCheckoutView.as_view(), name="OrderCheckoutView"),
     # path('cart/', views.get_checkout_page, name="get_checkout_page"),
     path('post/', views.post, name="post"),
     

@@ -1,5 +1,5 @@
-from django.shortcuts import render, redirect
-from .models import Gig, GigManager
+from django.shortcuts import render, redirect, HttpResponse
+from .models import Gig, GigManager, Order
 from django.views import View
 
 def get_home_page(request):
@@ -14,28 +14,6 @@ def get_home_page(request):
     return render(request, 'index.html', args)
 
 
-# def gig_details(request, id):
-    
-    
-
-# def add_basic_package(request):
-#     cart = request.session.get('cart', {})
-#     basic = request.POST.get('package_id')
-#     remove = request.POST.get('remove')
-#     print(basic)
-    
-#     cart = {
-#             'quantity': 1,
-#             'gig_manager': request.POST['package_id']
-#         }
-#     if remove:
-#         cart['package_id'] = cart['package_id'] - 1
-#     else:
-#         cart['package_id'] = cart['package_id'] + 1
-        
-#         return redirect('/')
-    # if not cart:
-    #     request.session['cart'] = {}
       
 class GigDetails(View):
     def get(self, request, id):
@@ -89,35 +67,102 @@ class CartView(View):
 
 
 
-        # cart = {
-        #     'quantity': 1,
-        #     'gig_manage': request.POST['package_id']
-        # }
+class OrderCheckoutView(View):
+    def get(self, request):
+        cart = request.session.get('cart')
+        if not cart:
+            request.session['cart'] = {}
+        ids = list(request.session.get('cart').keys())
+        cart_products = GigManager.get_gig(ids)
+        print(cart)
+        context = {
+            'cart_products': cart_products
+        }
+        return render(self.request, 'checkout.html', context)
+
+
+    def post(self, request):
+        cart = request.session.get('cart')
+        name = request.POST.get('name')
+
+        packages = GigManager.get_gig(list(cart.keys()))
+        user = request.user
         
-        # if remove:
-        #     cart['package_id'] = cart['package_id'] - 1
-        # else:
-        #     cart['pacakge_id'] = cart['package_id'] + 1
-        
-        # print('CART:', request.session['cart'])
-        # return redirect('/')
-        
+        for package in packages:
+
+            order = Order(
+                    name = name,
+                    user = user,
+                    package = package,
+                    price = package.price,
+                    seller = package.gig.seller
+                )
+            print(package)
+            print(order)
+
+            order.save()
+            request.session['cart'] = {}
+
+            return HttpResponse("Order Has Been Placed!")
 
 
 
 
-# def get_checkout_page(request):
-#     basic_ids = list(request.session.get('cart').keys())
-#     basic_cart = Basic.get_basic_ids(basic_ids)
-#     # basic = Basic.objects.all()
-#     # quantity = request.POST.get('quantity')
-#     # total_price = quantity * 
-    
-#     # basic_prices = list(map(self.basic_map_func, basic_cart))
-   
-#     print(basic_cart)
-#     args = {
-#         'basic_cart': basic_cart,
-#         # 'total_price': total_price
-#     }
-#     return render(request, 'cart.html', args)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

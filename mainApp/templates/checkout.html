@@ -1,0 +1,24 @@
+{% include 'base.html' %}
+{% load custom_filter %}
+
+<div class="container bg-light p-5 m-5">
+	<ul>	
+		{% for c in cart_products %}
+			<li>{{c.package}}</li>
+			<p class="badge bg-dark">{{ c|cart_quantity:request.session.cart }}</p>
+			<hr>
+		{% endfor %}
+	</ul>
+</div>
+
+
+<br><br>
+
+<div class="container p-5" style="background: #fff;">
+	<form action="" method="POST" class="form">
+		{% csrf_token %}
+			<label>Name</label><br>
+			<input type="text" placeholder="Enter your name..." class="form-control" name="name"><br>
+			<button type="submit" class="btn btn-primary w-100">ORDER NOW</button>
+	</form>
+</div>

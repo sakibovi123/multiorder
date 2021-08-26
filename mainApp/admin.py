@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Package, Gig, GigManager
+from .models import *
     
     
 class GigManagerInline(admin.TabularInline):
@@ -14,3 +14,6 @@ class GigAdmin(admin.ModelAdmin):
     
 admin.site.register(Package)
 admin.site.register(Gig, GigAdmin)
+admin.site.register(GigManager)
+admin.site.register(Seller)
+admin.site.register(Order)

@@ -1,12 +1,26 @@
 {% load custom_filter %}
 {% include 'base.html' %}
+<div class="container p-5">
 Cart Page 
+</div>
 
+<div class="container p-5">
 
+<table class="table p-5 bg-light">
+    <tr>
+        <th>Package</th>
+        <th>QUANTITY</th>
+        <th>PRICE</th>
+    </tr>
 
 {% for c in cart_products %}
-    {{c.package}}
-    ${{ c.price }}
-        <p class="badge bg-warning">{{ c|cart_quantity:request.session.cart }}</p>
-        
+<tr>
+    <td>{{c.package}}</td>
+    <td><p class="badge bg-dark">{{ c|cart_quantity:request.session.cart }}</p></td>
+    <td>${{ c.price }}</td>
+    
+</tr>        
 {% endfor %}
+</table>
+<a href="{% url 'OrderCheckoutView' %}" class="btn btn-primary">Go To Checkout</a>
+</div>
